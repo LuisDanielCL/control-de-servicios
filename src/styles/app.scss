@@ -1,0 +1,26 @@
+.menu {
+
+  a {
+    background: #3a57af;
+    font-size: 18px;
+    margin-right: 20px;
+    padding: 10px;
+  }
+
+  a:link {
+    text-decoration: inherit;
+    color: white;
+  }
+
+  a:visited {
+    text-decoration: inherit;
+    color: white;
+  }
+
+  a:active {
+    background: #102471;
+  }
+
+  background: #16436a;
+  padding: 30px 50px 0 50px;
+}

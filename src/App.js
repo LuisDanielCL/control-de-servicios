@@ -1,6 +1,7 @@
 import React from 'react';
-import Product from './js/product';
-// import Latest from './cryptocurrency/Latest';
+import Product from 'js/product';
+import Service from 'js/service';
+import 'styles/app.scss';
 
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 
@@ -11,13 +12,17 @@ function App() {
   return (
     <BrowserRouter>
       <div className="App">
+        <div className="menu">
+          <a href="/product">Productos</a>
+          <a href="/service">Servicios</a>
+        </div>
         <Switch>
           <Route path="/product">
             <Product/>
           </Route>
-          {/*<Route path="/service">*/}
-          {/*  <Latest/>*/}
-          {/*</Route>*/}
+          <Route path="/service">
+            <Service/>
+          </Route>
         </Switch>
       </div>
     </BrowserRouter>

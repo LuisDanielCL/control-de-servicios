@@ -1,15 +1,32 @@
-import 'styles/product.scss';
-import 'styles/loading.scss';
+import 'styles/service.scss';
+
 import React, {useState, useEffect, useCallback} from 'react';
-import Add from 'js/product/add';
-import {getProducts, getTotalProducts, deleteProduct } from "../services/backendHttpService";
+import Add from 'js/service/add';
+import {getServices, getTotalServices, deleteService } from "../services/backendHttpService";
 import { formatDate } from 'js/common/dateHelper'
+import { CSVLink } from "react-csv";
 
+const stateMapping = {
+  PENDIENTE: "Pendiente",
+  ENPROGRESO: "En progreso",
+  FINALIZADO: "Finalizado"
+}
 
-function Product() {
+const headers = [
+  { label: "Id", key: "id" },
+  { label: "Next Service date", key: "nextServiceDate" },
+  { label: "Product Id", key: "productId" },
+  { label: "Type", key: "type" },
+  { label: "state", key: "state" },
+  { label: "Product Name", key: "product.name" },
+  { label: "Product Acquisition Date", key: "product.acquisitionDate" }
+];
+const csvPageLink = React.createRef();
+const csvAllLink = React.createRef();
 
+function Service() {
   const limit = 20;
-  const [products, setProducts] = useState ([]);
+  const [services, setService] = useState ([]);
   const [offset, setOffset] = useState (0);
   const [sort, setSort] = useState ("");
   const [sortDirection, setSortDirection] = useState ("");
@@ -17,6 +34,9 @@ function Product() {
   const [totalRows, setTotalRows] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [editData, setEditData] = useState({id: ""});
+  const [csvData, setCsvData] = useState([]);
+
+
 
 
 
@@ -29,9 +49,9 @@ function Product() {
     if (sort !== "") options.filter = sort;
     if (sortDirection !== "") options.direction = sortDirection;
 
-    getProducts(options).then(response => {
+    getServices(options).then(response => {
       setIsLoading(false)
-      setProducts(response.data);
+      setService(response.data);
     }).catch(response => {
       alert(response);
     });
@@ -52,7 +72,7 @@ function Product() {
   }, [updateTable]);
 
   useEffect(() => {
-    getTotalProducts().then(response => {
+    getTotalServices().then(response => {
       updatePagination(response.data.count);
     }).catch(response => {
       alert(response);
@@ -60,7 +80,7 @@ function Product() {
   }, [updatePagination]);
 
   const remove = (id) => {
-    deleteProduct(id).then(response => {
+    deleteService(id).then(response => {
       updateTable();
       updatePagination(totalRows - 1);
     }).catch(response => {
@@ -68,28 +88,45 @@ function Product() {
     });
   }
 
+  const csvAllGetData = () => {
+    getServices({}).then(response => {
+      setCsvData(response.data);
+      csvAllLink.current.link.click();
+    }).catch(response => {
+      alert(response);
+    });
+  }
+
   const renderData = (data, index) => {
-    const acquisitionDate = formatDate(data.acquisitionDate);
+    const acquisitionDate = formatDate(data.product.acquisitionDate);
+    const nextServiceDate = formatDate(data.nextServiceDate);
 
     return (
       <tr key={'product_'+data.id}>
         <td>{data.id}</td>
-        <td>{data.name}</td>
+        <td>{data.product.id}</td>
+        <td>{data.product.name}</td>
         <td>{acquisitionDate}</td>
+        <td>{nextServiceDate}</td>
+        <td>{data.type}</td>
+        <td>{stateMapping[data.state]}</td>
         <td>
-          <div className="action_buttons">
-            <button className="delete_button" onClick={() => remove(data.id)}>Borrar</button>
-            <button className="edit_button" onClick={() => setEditData({ id: data.id, name: data.name, acquisitionDate: data.acquisitionDate })}>
-              Editar
-            </button>
-          </div>
+          <button className="delete_button" onClick={() => remove(data.id)}>Borrar</button>
+          <button className="edit_button" onClick={() =>
+            setEditData({ id: data.id, productId: data.productId, type: data.type, state:data.state, nextServiceDate: data.nextServiceDate })
+          }>
+            Editar
+          </button>
         </td>
       </tr>
     )
   };
 
+
   return (
+
     <div className="wrapper">
+
       <Add
         updateTable={() => {updateTable()}}
         updatePagination={(count) => {updatePagination(count)}}
@@ -99,17 +136,21 @@ function Product() {
       />
 
       <div className="order_options">
-        <p className="content_label">Ordenar por:</p>
+        <label className="content_label">Ordenar por:</label>
         <div className="box">
           <select id="SortBy" onChange={(event) => {setOffset(0);setSort(event.target.value)}} value={sort}>
             <option value=""/>
-            <option value="id">Id</option>
-            <option value="name">Nombre</option>
-            <option value="acquisitionDate">Fecha de adquisición</option>
+            <option value="service.id">id</option>
+            <option value="product.id">Id del producto</option>
+            <option value="product.name">Nombre</option>
+            <option value="product.acquisitionDate">Fecha de adquisición</option>
+            <option value="service.nextServiceDate">Fecha del proximo servicio</option>
+            <option value="service.type">Tipo</option>
+            <option value="service.state">Estado</option>
           </select>
         </div>
 
-        <p className="content_label">Dirección: </p>
+        <label className="content_label">Dirección:</label>
         <div className="box">
           <select id="Order" onChange={(event) => {setOffset(0);setSortDirection(event.target.value)}} value={sortDirection}>
             <option value=""/>
@@ -119,19 +160,31 @@ function Product() {
         </div>
       </div>
 
+      <div className="csv_wrapper">
+        <CSVLink data={services} headers={headers} filename="page.csv" ref={csvPageLink}/>
+        <CSVLink data={csvData} headers={headers} filename="all.csv" ref={csvAllLink}/>
+        <button type="button" className="edit_button" onClick={() => {csvPageLink.current.link.click()}}>exportar pagina a CSV</button>
+        <button type="button" className="edit_button" onClick={() => {csvAllGetData()}}>exportar todo a CSV</button>
+
+      </div>
+
       <div className="table-data">
         <table>
           <thead>
           <tr>
             <th>Id</th>
+            <th>Id producto</th>
             <th>Nombre</th>
             <th>Fecha de adquisición</th>
+            <th>Fecha proximo servicio</th>
+            <th>Tipo</th>
+            <th>Estado</th>
             <th>Acción</th>
           </tr>
           </thead>
           {!isLoading &&
           <tbody>
-          {products.map(renderData)}
+          {services.map(renderData)}
           </tbody>
           }
 
@@ -152,6 +205,7 @@ function Product() {
         <button className="button_pagination" disabled={totalPages <= offset+1} onClick={() => {setOffset(offset + 1)}}>
           Siguiente
         </button>
+
         <label>{offset+1} de {totalPages}</label>
       </div>
 
@@ -160,4 +214,4 @@ function Product() {
   );
 }
 
-export default Product;
+export default Service;

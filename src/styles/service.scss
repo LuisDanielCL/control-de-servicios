@@ -1,0 +1,43 @@
+@import "main.scss";
+@import "loading.scss";
+
+.final-product-lbl {
+  display: block;
+  margin: 10px 0;
+  clear: both;
+}
+
+.box {
+  select:disabled {
+    background: #ececec;
+  }
+}
+
+.content_wrapper {
+  clear: both;
+}
+
+.product-found-lbl {
+  float: left;
+  margin: 12px 10px 10px;
+  color: #18800d;
+}
+
+.product-not-found-lbl {
+  float: left;
+  margin: 12px 10px 10px;
+  color: #ba1629;
+}
+
+.csv_wrapper {
+  a {
+    display: none;
+  }
+
+  .edit_button {
+    float: left;
+    margin: 11px 10px;
+    width: 200px;
+  }
+}
+

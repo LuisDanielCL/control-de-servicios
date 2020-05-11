@@ -1,0 +1,197 @@
+.button_pagination, .delete_button, .edit_button, .add_button {
+  background-color: #206595;
+  border: none;
+  color: white;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 10px;
+  padding: 12px 32px;
+  text-align: center;
+  text-decoration: none;
+  width: 150px;
+}
+
+.edit_button, .delete_button, .add_button {
+  font-size: 14px;
+  margin: 4px 2px;
+  padding: 5px 10px;
+  text-align: center;
+  text-decoration: none;
+  width: 70px;
+  border-radius: 3px;
+}
+
+.add_wrapper {
+  clear: both;
+
+  .add_button, .edit_button {
+    float: left;
+    margin: 11px 0;
+  }
+}
+
+.add_button {
+  background-color: #18800d;
+}
+
+.edit_button {
+  background-color: #366f9e;
+}
+
+.delete_button {
+  background-color: #ba1629;
+}
+
+.content_input {
+  float: left;
+  border: 1px solid #d9d9d9;
+  border-radius: 2px;
+  margin: 10px 15px 2px 0;
+  padding: 5px 5px;
+}
+
+.button_pagination:active {
+  cursor: auto;
+  background-color: #3c76a0;
+}
+
+.button_pagination:disabled {
+  cursor: auto;
+  background-color: #7e8586;
+}
+
+.box {
+  border:1px solid #d9d9d9;
+  float: left;
+  height:30px;
+  margin:10px 20px 15px auto;
+  overflow: hidden;
+  position:relative;
+  width: 230px;
+
+
+  select {
+    background: transparent;
+    border: none;
+    font-size: 14px;
+    height: 30px;
+    padding: 5px;
+    width: 250px;
+  }
+  select:focus{ outline: none;}
+}
+
+
+.box::after{
+  content:"\025be";
+  display:table-cell;
+  padding-top:7px;
+  text-align:center;
+  width:30px;
+  height:30px;
+  background-color:#d9d9d9;
+  position:absolute;
+  top:0;
+  right:0px;
+  pointer-events: none;
+}
+
+.table-data {
+  text-align: center;
+  border-bottom: 10px solid #206595;
+  padding-top: 20px;
+
+  table {
+    padding-top: 20px;
+    border-collapse: collapse;
+    width: 100%;
+    table-layout: fixed;
+    display: table;
+  }
+
+  tbody {
+    display:block;
+    height:500px;
+    scrollbar-width: none;
+    overflow-y: scroll;
+  }
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
+  thead, tbody tr {
+    display:table;
+    width:100%;
+    table-layout:fixed;/* even columns width , fix width of table too*/
+  }
+
+  th, td a {
+    padding: 8px;
+  }
+
+  tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+
+  tr:hover {
+    background-color: #79b4d9;
+  }
+
+  td a {
+    display: block;
+    height:100%;
+    width:100%;
+  }
+
+  th {
+    background-color: #206595;
+    color: white;
+  }
+}
+
+.content_label {
+  float: left;
+  margin: 12px 10px 0 0;
+}
+
+.order_options {
+  border-top: 1px solid #ccd2d2;
+  clear: both;
+}
+
+.wrapper {
+  padding: 20px 50px 0 50px;
+}
+
+.wrapper_loader {
+  padding-top: 150px;
+  height: 350px;
+
+  .loader {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+.wrapper_pagination {
+  margin-top: 20px;
+}
+
+.react-datepicker__input-container {
+  input {
+    float: left;
+    border: 1px solid #d9d9d9;
+    border-radius: 2px;
+    margin: 10px 15px 2px 0;
+    padding: 5px 5px;
+  }
+}
+
+.react-datepicker-wrapper {
+  float: left;
+}
+
+

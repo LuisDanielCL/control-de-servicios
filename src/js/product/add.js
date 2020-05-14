@@ -24,7 +24,8 @@ function Add({ updateTable, updatePagination, totalRows, clearEdit, editData }) 
           updatePagination(totalRows + 1);
         }
       ).catch(response => {
-        alert(response)
+        debugger;
+        alert(response.response.data.message)
       })
     } else {
       alert("all fields are required")
